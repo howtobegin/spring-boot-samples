@@ -1,5 +1,6 @@
 package com.github.howtobegin.websocket.controller;
 
+import com.github.howtobegin.websocket.WebSocketCounter;
 import com.github.howtobegin.websocket.constant.Constant;
 import com.github.howtobegin.websocket.message.WiselyMessage;
 import com.github.howtobegin.websocket.message.WiselyResponse;
@@ -30,6 +31,8 @@ public class WsController {
     WebSocketService webSocketService;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private WebSocketCounter counter;
 
     // welcome
     @MessageMapping(Constant.FORETOSERVERPATH)//@MessageMapping和@RequestMapping功能类似，用于设置URL映射地址，浏览器向服务器发起请求，需要通过该地址。
@@ -40,7 +43,7 @@ public class WsController {
         users.add("d892bf12bf7d11e793b69c5c8e6f60fb");//此处写死只是为了方便测试,此值需要对应页面中订阅个人消息的userId
         webSocketService.send2Users(users, new WiselyResponse("admin hello"));
 
-        return new WiselyResponse("Welcome, " + message.getName() + "!");
+        return new WiselyResponse("Welcome, " + message.getName() + "! 在线人数 ： " + counter.onlineUsers());
     }
 
     /**
